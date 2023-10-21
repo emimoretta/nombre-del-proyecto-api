@@ -1,38 +1,36 @@
-{
-  "twits": [
-    {
-      "id": 1,
-      "user": "usuario1",
-      "message": "Este es un mensaje de prueba.",
-      "timestamp": "2023-10-08T12:00:00Z",
-      "responses": [
-        {
-          "id": 101,
-          "user": "usuario2",
-          "message": "¡Gracias por el mensaje!",
-          "timestamp": "2023-10-08T12:05:00Z"
-        },
-        {
-          "id": 102,
-          "user": "usuario3",
-          "message": "Esto es una respuesta.",
-          "timestamp": "2023-10-08T12:10:00Z"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "user": "usuario2",
-      "message": "Otro twit interesante.",
-      "timestamp": "2023-10-08T12:15:00Z",
-      "responses": [
-        {
-          "id": 201,
-          "user": "usuario1",
-          "message": "¡Me gusta este twit!",
-          "timestamp": "2023-10-08T12:20:00Z"
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "user": "usuario1",
+    "message": "Este es un mensaje de prueba.",
+    "timestamp": "2023-10-08T12:00:00Z",
+    "responses": [
+      {
+        "id": 101,
+        "user": "usuario2",
+        "message": "¡Gracias por el mensaje!",
+        "timestamp": "2023-10-08T12:05:00Z"
+      },
+      {
+        "id": 102,
+        "user": "usuario3",
+        "message": "Esto es una respuesta.",
+        "timestamp": "2023-10-08T12:10:00Z"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "user": "usuario2",
+    "message": "Otro twit interesante.",
+    "timestamp": "2023-10-08T12:15:00Z",
+    "responses": [
+      {
+        "id": 201,
+        "user": "usuario1",
+        "message": "¡Me gusta este twit!",
+        "timestamp": "2023-10-08T12:20:00Z"
+      }
+    ]
+  }
+]
