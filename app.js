@@ -12,6 +12,7 @@ const sql = require('mssql');
 
 // Habilita CORS para todas las rutas
 
+//asdasdasdas
 
 app.use(cors());
 // Ruta de prueba
