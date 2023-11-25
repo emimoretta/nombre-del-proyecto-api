@@ -6,6 +6,9 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const Twit = require('./models/twit');
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,6 +23,7 @@ const Usuario = mongoose.model('Usuario', {
   email: String,
   password: String,
 });
+
 
 // Ruta para manejar la solicitud de registro de usuario
 app.post('/registrar', async (req, res) => {
@@ -44,12 +48,15 @@ app.post('/registrar', async (req, res) => {
     // Guardar el nuevo usuario en la base de datos
     await nuevoUsuario.save();
 
-    res.status(200).json({ mensaje: 'Usuario registrado con éxito' });
+    res.status(200).json({token, mensaje: 'Usuario registrado con éxito' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al registrar el usuario' });
   }
 });
+
+
+
 
 app.post('/iniciar-sesion', async (req, res) => {
   try {
@@ -68,11 +75,40 @@ app.post('/iniciar-sesion', async (req, res) => {
     if (!contrasenaValida) {
       return res.status(400).json({ error: 'Credenciales inválidas' });
     }
-
-    res.status(200).json({ mensaje: 'Inicio de sesión exitoso' });
+    const token = jwt.sign({ userId: usuario._id }, 'secreto');
+    res.status(200).json({token, mensaje: 'Inicio de sesión exitoso' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al iniciar sesión' });
+  }
+});
+
+app.post('/crear-twit', async (req, res) => {
+  try {
+    // Extraer el token de la cabecera de autorización
+    const token = req.headers.authorization.split(' ')[1];
+    
+    // Verificar y decodificar el token para obtener el ID del usuario
+    const decodedToken = jwt.verify(token, 'secreto');
+    const userId = decodedToken.userId;
+
+    const { texto } = req.body;
+
+    // Crear un nuevo twit con el ID del usuario, texto y fecha/hora
+    const nuevoTwit = new Twit({
+      userId,
+      texto,
+      fechaHora: new Date(),
+      
+    });
+
+    // Guardar el twit en la base de datos
+    await nuevoTwit.save();
+    res.status(201).json({ mensaje: 'Twit creado exitosamente' });
+   
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al crear el twit' });
   }
 });
 
