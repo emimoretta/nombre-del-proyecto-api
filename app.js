@@ -105,12 +105,42 @@ app.post('/crear-twit', async (req, res) => {
     // Guardar el twit en la base de datos
     await nuevoTwit.save();
     res.status(201).json({ mensaje: 'Twit creado exitosamente' });
-   
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al crear el twit' });
   }
 });
+
+const verificarToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (token) {
+    jwt.verify(token, 'secreto', (error, decoded) => {
+      if (error) {
+        return res.status(401).json({ error: 'Token inválido' });
+      } else {
+        req.userId = decoded.userId;
+        next();
+      }
+    });
+  } else {
+    return res.status(403).json({ error: 'Token no proporcionado' });
+  }
+};
+
+app.get('/obtener-twits', verificarToken, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const twits = await Twit.find({ userId });
+    res.status(200).json({ twits });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los twits' });
+  }
+});
+
+
 
 
 // Ruta de prueba
